@@ -130,7 +130,21 @@ class DatabaseHelper {
 			System.out.println(", Role: " + role); 
 		} 
 	}
+	public void resetPassword(String email, String password) throws SQLException {
+		String sql = "UPDATE cse360users SET password = ? WHERE email = ?";
+		Statement stmt = connection.createStatement();
+		ResultSet rs = stmt.executeQuery(sql); 
+		
+		while(rs.next()) { 
+			// Retrieve by column name 
+			email= rs.getString("email"); 
+			password = rs.getString("password");
 
+			System.out.print(", Email: " + email); 
+			System.out.print(", Password: " + password); 
+		} 
+
+	}
 	public void deleteUserByEmail(String email) {
 	    String deleteUser = "DELETE FROM cse360users WHERE email = ?";
 	    try (PreparedStatement pstmt = connection.prepareStatement(deleteUser)) {

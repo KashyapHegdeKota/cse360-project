@@ -11,11 +11,15 @@ public class Admin{
         
        for(int i=0;i<5;i++) {
     	   Random r = new Random();
-    	   char c = (char)(r.nextInt(100)+'0');
+    	   char c = (char)(r.nextInt(9)+'0');
     	   otp[i] = c;
        }
        
         return otp;
+	}
+	
+	static void register() {
+		
 	}
 	
 	static void reset(String username) {
@@ -31,6 +35,16 @@ public class Admin{
 		if(otp_user.equals(otp_gen)) {
 			System.out.println("Enter the new password: ");
 			String new_pass = scan.nextLine();
+			
+//			while(cond == 0) {
+//				if(PasswordEvaluator.evaluatePassword(new_pass) == "Success") {
+//					//Database change the password of that username
+//					cond = 1;
+//				}
+//				else {
+//					cond = 0;
+//				}
+//			}
 		}
 		
 		}
