@@ -1,4 +1,5 @@
 package edu.asu.DatabasePart1;
+import java.sql.SQLException;
 import java.util.*;
 import java.sql.SQLException;
 import java.time.*;
@@ -7,6 +8,11 @@ public class Admin{
 	private static String username; 
 	static Scanner scan = new Scanner(System.in);
 	
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> Kashyap
 	public static void main(String[] args) {
 		System.out.println("Enter username: ");
 		username = scan.nextLine();
@@ -77,6 +83,10 @@ public class Admin{
 				
 	}
 	
+<<<<<<< HEAD
+>>>>>>> Kashyap
+=======
+>>>>>>> Kashyap
 	static char[] generateOTP() {
 		char[] otp = new char[5]; // Array to hold the characters
         int index = 0;
@@ -90,7 +100,33 @@ public class Admin{
         return otp;
 	}
 	
+<<<<<<< HEAD
+<<<<<<< HEAD
+	static String charToStringOTP(char[] otp) {
+=======
 	static void reset(String email) {
+		char[] otp = generateOTP();
+		int cond = 0;
+		
+>>>>>>> Kashyap
+		String otp_gen = "";
+		LocalTime otp_time =LocalTime.now();
+		int minutes = otp_time.getMinute();
+		
+		for(int i = 0; i < 5; i++) {
+			otp_gen = otp_gen + Character.toString(otp[i]);
+		}
+		return otp_gen;
+	}
+	
+	static void addOTPToDB(String otp) throws SQLException {
+		DatabaseHelper.addOTP(otp);
+	}
+	
+	static void reset(String username) {
+=======
+	static void reset(String email) {
+>>>>>>> Kashyap
 		char[] otp = generateOTP();
 		int cond = 0;
 		
@@ -130,7 +166,23 @@ public class Admin{
 				}
 			}
 			
+<<<<<<< HEAD
+<<<<<<< HEAD
+			while(cond == 0) {
+				if(PasswordEvaluator.evaluatePassword(new_pass) == "Success") {
+					cond = 1;
+				}
+				else {
+					cond = 0;
+				}
+			}
+		}
+=======
 		
+>>>>>>> Kashyap
+=======
+		
+>>>>>>> Kashyap
 		
 		}
 	}

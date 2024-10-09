@@ -69,23 +69,32 @@ public class StartCSE360 {
 	private static void userFlow() throws SQLException {
 		String email = null;
 		String password = null;
+		String userOTP = null;
+		String adminOTP = null;
 		System.out.println("user flow");
 		System.out.print("What would you like to do 1.Register 2.Login  ");
 		String choice = scanner.nextLine();
 		switch(choice) {
 		case "1": 
-			System.out.print("Enter User Email: ");
-			email = scanner.nextLine();
-			System.out.print("Enter User Password: ");
-			password = scanner.nextLine(); 
-			// Check if user already exists in the database
-		    if (!databaseHelper.doesUserExist(email)) {
-		        databaseHelper.register(email, password, "user");
-		        System.out.println("User setup completed.");
-		    } else {
-		        System.out.println("User already exists.");
-		    }
-			break;
+			System.out.println("Enter the OTP given by admin");
+			userOTP = scanner.nextLine();
+			adminOTP = DatabaseHelper.getOTP();
+			if(userOTP.equals(adminOTP)) {
+				System.out.print("Enter User Email: ");
+				email = scanner.nextLine();
+				System.out.print("Enter User Password: ");
+				password = scanner.nextLine(); 
+				// Check if user already exists in the database
+			    if (!databaseHelper.doesUserExist(email)) {
+			        databaseHelper.register(email, password, "user");
+			        System.out.println("User setup completed.");
+			    } else {
+			        System.out.println("User already exists.");
+			    }
+				break;
+			}else {
+				System.out.println("The OTP does not match");
+			}
 		case "2":
 			System.out.print("Enter User Email: ");
 			email = scanner.nextLine();
@@ -110,8 +119,21 @@ public class StartCSE360 {
 		String password = scanner.nextLine();
 		if (databaseHelper.login(email, password, "admin")) {
 			System.out.println("Admin login successful.");
-			databaseHelper.displayUsersByAdmin();
-
+			System.out.println("What would you like to do re bhadkaw lanja lamdike bsdk\n 1. Display users list.\n 2. Generate OTP for new user.");
+			String choice = scanner.nextLine();
+			switch(choice) {
+			case "1": 
+				databaseHelper.displayUsersByAdmin();
+			case "2":
+				System.out.println("The OTP has been generated.");
+				char[] otpGenerated = new char[5];
+				String otpString = "";
+				otpGenerated = Admin.generateOTP();
+				otpString = Admin.charToStringOTP(otpGenerated);
+				System.out.println(otpString);
+				Admin.addOTPToDB(otpString);
+				
+			}
 		} else {
 			System.out.println("Invalid admin credentials. Try again!!");
 		}

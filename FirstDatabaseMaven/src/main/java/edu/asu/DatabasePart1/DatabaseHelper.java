@@ -12,7 +12,8 @@ class DatabaseHelper {
 	static final String USER = "sa"; 
 	static final String PASS = ""; 
 
-	private static Connection connection = null;
+	private static Connection connection;
+
 	private Statement statement = null; 
 	//	PreparedStatement pstmt
 
@@ -27,14 +28,15 @@ class DatabaseHelper {
 			System.err.println("JDBC Driver not found: " + e.getMessage());
 		}
 	}
-
 	private void createTables() throws SQLException {
-		String userTable = "CREATE TABLE IF NOT EXISTS cse360users ("
-				+ "id INT AUTO_INCREMENT PRIMARY KEY, "
-				+ "email VARCHAR(255) UNIQUE, "
-				+ "password VARCHAR(255), "
-				+ "role VARCHAR(20))";
-		statement.execute(userTable);
+
+	    String userTable = "CREATE TABLE IF NOT EXISTS cse360users ("
+	            + "id INT AUTO_INCREMENT PRIMARY KEY, "
+	            + "email VARCHAR(255) UNIQUE, "
+	            + "password VARCHAR(255), "
+	            + "role VARCHAR(20), "
+	            + "otp VARCHAR(20))";
+	    statement.execute(userTable);
 	}
 
 	// Check if the database is empty
@@ -91,7 +93,32 @@ class DatabaseHelper {
 	    return false; // If an error occurs, assume user doesn't exist
 	}
 
-	public static void displayUsersByAdmin() throws SQLException{
+
+
+
+	
+	public static boolean addOTP(String otp) throws SQLException {
+	    String query = "UPDATE cse360users SET otp = ? WHERE role = ?";
+	    try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+	        pstmt.setString(1, otp);
+	        pstmt.setString(2, "admin");
+	        return pstmt.executeUpdate() > 0; // Use executeUpdate for UPDATE queries
+	    }
+	}
+	public static String getOTP() throws SQLException{
+		String query = "SELECT otp from cse360users WHERE role= ?";
+	    try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+	        pstmt.setString(1, "admin");
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            if (rs.next()) {
+	                return rs.getString("otp"); // Retrieve the OTP value from the result set
+	            }
+	        }
+	    }
+	    return null;    
+	}
+	public void displayUsersByAdmin() throws SQLException{
+
 		String sql = "SELECT * FROM cse360users"; 
 		Statement stmt = connection.createStatement();
 		ResultSet rs = stmt.executeQuery(sql); 
@@ -130,19 +157,17 @@ class DatabaseHelper {
 			System.out.println(", Role: " + role); 
 		} 
 	}
-	public static void resetPassword(String email, String password) throws SQLException {
-		String sql = "UPDATE cse360users SET password = ? WHERE email = ?";
-		Statement stmt = connection.createStatement();
-		ResultSet rs = stmt.executeQuery(sql); 
-		
-		while(rs.next()) { 
-			// Retrieve by column name 
-			email= rs.getString("email"); 
-			password = rs.getString("password");
 
-			System.out.print(", Email: " + email); 
-			System.out.print(", Password: " + password); 
-		} 
+	public boolean resetPassword(String email, String password) throws SQLException {
+		String query = "UPDATE cse360users SET password = ? WHERE email = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setString(1, email);
+			pstmt.setString(2, password);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				return rs.next();
+			}
+		}
+
 
 	}
 	public static void deleteUserByEmail(String email) {
