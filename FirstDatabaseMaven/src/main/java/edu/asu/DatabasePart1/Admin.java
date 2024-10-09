@@ -7,7 +7,10 @@ public class Admin{
 	static Scanner scan = new Scanner(System.in);
 	
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> Kashyap
 	public static void main(String[] args) {
 		System.out.println("Enter username: ");
 		username = scan.nextLine();
@@ -68,6 +71,9 @@ public class Admin{
 				
 	}
 	
+<<<<<<< HEAD
+>>>>>>> Kashyap
+=======
 >>>>>>> Kashyap
 	static char[] generateOTP() {
 		char[] otp = new char[5]; // Array to hold the characters
@@ -83,8 +89,18 @@ public class Admin{
 	}
 	
 <<<<<<< HEAD
+<<<<<<< HEAD
 	static String charToStringOTP(char[] otp) {
+=======
+	static void reset(String email) {
+		char[] otp = generateOTP();
+		int cond = 0;
+		
+>>>>>>> Kashyap
 		String otp_gen = "";
+		LocalTime otp_time =LocalTime.now();
+		int minutes = otp_time.getMinute();
+		
 		for(int i = 0; i < 5; i++) {
 			otp_gen = otp_gen + Character.toString(otp[i]);
 		}
@@ -134,6 +150,7 @@ public class Admin{
 			}
 			
 <<<<<<< HEAD
+<<<<<<< HEAD
 			while(cond == 0) {
 				if(PasswordEvaluator.evaluatePassword(new_pass) == "Success") {
 					cond = 1;
@@ -143,6 +160,9 @@ public class Admin{
 				}
 			}
 		}
+=======
+		
+>>>>>>> Kashyap
 =======
 		
 >>>>>>> Kashyap
