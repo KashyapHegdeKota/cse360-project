@@ -36,6 +36,9 @@ public class PasswordEvaluator {
 	private static char currentChar;
 	private static int currentCharNdx;
 	private static boolean running;
+	public static void main(String[] args) {
+		System.out.println();
+	}
 
 	private static void displayInputState() {
 		//This method is used to display the string and character information to make debugging the code easier.
