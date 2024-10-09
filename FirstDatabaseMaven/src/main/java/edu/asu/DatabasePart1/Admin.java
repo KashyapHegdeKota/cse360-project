@@ -1,9 +1,11 @@
 package edu.asu.DatabasePart1;
 import java.sql.SQLException;
 import java.util.*;
+import java.sql.SQLException;
+import java.time.*;
 
 public class Admin{
-	private String username; 
+	private static String username; 
 	static Scanner scan = new Scanner(System.in);
 	
 <<<<<<< HEAD
@@ -31,28 +33,38 @@ public class Admin{
 			System.out.print("Enter your choice (1-6): ");
 			choice = scan.nextInt();
 			if (choice==1){
-				invite();
+				//invite();
 			}
 			else if (choice==2){
-				reset();
+				reset(username);
 			}
 			else if (choice==3){
-				static String username_del;
+				String username_del;
 				System.out.println("Enter the username you want to delete: ");
 				username_del = scan.nextLine();
 				System.out.println("Are you sure?(yes if you want to continue): ");
 				String ans= scan.nextLine();
-				if (ans.toLowerCase()=="yes") {
-					DatabaseHelper.deleteUserByEmail(username_del);
-					System.out.println("Successfully deleted the user.");
-				}
-				else {
-					System.out.println("Admin changed their mind.")
+				try {
+					if (ans.toLowerCase()=="yes") {
+						DatabaseHelper.deleteUserByEmail(username_del);
+						System.out.println("Successfully deleted the user.");
+					}
+					else {
+						System.out.println("Admin changed their mind.");
+					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 				
 			}
 			else if (choice==4){
-				DatabaseHelper.displayUsersByAdmin();
+				try {
+					DatabaseHelper.displayUsersByAdmin();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			else if (choice==5){
 				
@@ -131,7 +143,7 @@ public class Admin{
 //		String str_otp_time= otp_time.toString();
 //		String str_otp_exp= otp_expiration.toString();
 //		
-		if(otp_user.equals(otp_gen)) {
+		if(otp_user.equals(otp_gen)){
 			LocalTime curr_time=LocalTime.now();
 			int curr_min=curr_time.getMinute();
 			if(curr_min-minutes<=5) {
@@ -140,7 +152,12 @@ public class Admin{
 				
 				while(cond == 0) {
 					if(PasswordEvaluator.evaluatePassword(new_pass) == "Success") {
-						//DatabaseHelper.resetPassword(email, new_pass);
+						try {
+							DatabaseHelper.resetPassword(email, new_pass);
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							System.out.println("Error in Reset password: "+ e);
+						}
 						cond = 1;
 					}
 					else {

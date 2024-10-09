@@ -13,6 +13,7 @@ class DatabaseHelper {
 	static final String PASS = ""; 
 
 	private static Connection connection;
+
 	private Statement statement = null; 
 	//	PreparedStatement pstmt
 
@@ -91,6 +92,10 @@ class DatabaseHelper {
 	    }
 	    return false; // If an error occurs, assume user doesn't exist
 	}
+
+
+
+
 	
 	public static boolean addOTP(String otp) throws SQLException {
 	    String query = "UPDATE cse360users SET otp = ? WHERE role = ?";
@@ -113,6 +118,7 @@ class DatabaseHelper {
 	    return null;    
 	}
 	public void displayUsersByAdmin() throws SQLException{
+
 		String sql = "SELECT * FROM cse360users"; 
 		Statement stmt = connection.createStatement();
 		ResultSet rs = stmt.executeQuery(sql); 
@@ -151,6 +157,7 @@ class DatabaseHelper {
 			System.out.println(", Role: " + role); 
 		} 
 	}
+
 	public boolean resetPassword(String email, String password) throws SQLException {
 		String query = "UPDATE cse360users SET password = ? WHERE email = ?";
 		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -161,8 +168,9 @@ class DatabaseHelper {
 			}
 		}
 
+
 	}
-	public void deleteUserByEmail(String email) {
+	public static void deleteUserByEmail(String email) {
 	    String deleteUser = "DELETE FROM cse360users WHERE email = ?";
 	    try (PreparedStatement pstmt = connection.prepareStatement(deleteUser)) {
 	        pstmt.setString(1, email);
